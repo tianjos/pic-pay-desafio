@@ -41,15 +41,24 @@ export class Digits {
         return new Digits(this.digits.slice(0, index))
     }
 
+    reverse() {
+        return new Digits(this.digits.reverse())
+    }
+
+    mergeWith(digit: Digit) {
+        return new Digits([...this.digits, digit])
+    }
+
     allEquals() {
         return this.digits.every((digit) => digit.equalTo(this.digits[0]))
     }
 
-    // asReverse() {
-    //     return new Digits(this.digits.reverse())
-    // }
+    pluck(index: number) {
+        const digit = this.digits.at(index)
+        if (!digit) {
+            throw new Error('digit not found')
+        }
 
-    // mapTo(fn: (digit: Digit, index: number, array: Digit[]) => Digit[]) {
-    //     return new Digits(this.digits.map(fn))
-    // }
+        return digit
+    }
 }

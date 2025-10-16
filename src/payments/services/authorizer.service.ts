@@ -17,13 +17,13 @@ export class AuthorizerService {
                 catchError((error: AxiosError) => {
                     this.logger.error(error.response?.data);
 
-                    throw 'An error happened';
+                    throw new Error('could not')
                 }),
             )
         )
 
         if (response.status === 403) {
-            throw 'unauthorizer'
+            throw new Error('unauthorizer')
         }
     }
 }

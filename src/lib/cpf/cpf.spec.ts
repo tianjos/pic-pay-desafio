@@ -6,4 +6,8 @@ describe('CPF', () => {
 
         expect(cpf).toBeInstanceOf(CPF)
     })
+
+    it('should fail with all equal digits', () => {
+        expect(() => new CPF('111.111.111-11')).toThrow('invalid cpf')
+    })
 })

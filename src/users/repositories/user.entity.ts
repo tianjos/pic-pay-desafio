@@ -1,6 +1,6 @@
+import { Account } from "src/account/repositories/account.entity";
 import { Timestamp } from "src/common/repositories/timestamp.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Role } from "./role.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('users')
 export class User extends Timestamp {
@@ -22,7 +22,7 @@ export class User extends Timestamp {
     @Column()
     password: string
 
-    @ManyToMany(() => Role)
-    @JoinTable()
-    roles: Role[]
+    @OneToOne(() => Account, { eager: true })
+    @JoinColumn()
+    account: Account
 }

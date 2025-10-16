@@ -1,4 +1,5 @@
 import { Calculator } from "./calculator";
+import { CPF_LENGTH } from "./constants";
 import { Digits } from "./digits";
 import { Verifier } from "./verifier";
 
@@ -8,7 +9,7 @@ export class CPF {
     constructor(input: string) {
         const digits = new Digits(input)
 
-        if (digits.asLength() !== 11) {
+        if (digits.asLength() !== CPF_LENGTH) {
             throw new Error('invalid cpf length')
         }
 
@@ -16,14 +17,14 @@ export class CPF {
             throw new Error('invalid cpf')
         }
 
-        const firstVerifier = new Verifier(new Calculator(digits.splitAt(9).asArray())).generate()
-        const lastVerifier = new Verifier(new Calculator([...digits.splitAt(9).asArray(), firstVerifier])).generate()
+        const firstVerifier = new Verifier(new Calculator(digits.splitAt(9))).generate()
+        const lastVerifier = new Verifier(new Calculator(digits.splitAt(9).mergeWith(firstVerifier))).generate()
 
-        if (!firstVerifier.equalTo(digits.asArray().at(-2)!)) {
+        if (!firstVerifier.equalTo(digits.pluck(-2))) {
             throw new Error('invalid cpf')
         }
-
-        if (!lastVerifier.equalTo(digits.asArray().at(-1)!)) {
+        //pick(first()) // pick(last()) // pick(nth(3)) || pick(secondToLast())
+        if (!lastVerifier.equalTo(digits.pluck(-1))) {
             throw new Error('invalid cpf')
         }
 
