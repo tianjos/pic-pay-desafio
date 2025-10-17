@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { catchError, firstValueFrom, retry } from 'rxjs';
 
@@ -17,13 +17,13 @@ export class AuthorizerService {
                 catchError((error: AxiosError) => {
                     this.logger.error(error.response?.data);
 
-                    throw new Error('could not')
+                    throw new ServiceUnavailableException('try again later')
                 }),
             )
         )
 
         if (response.status === 403) {
-            throw new Error('unauthorizer')
+            throw new ForbiddenException('transfer unauthorized')
         }
     }
 }

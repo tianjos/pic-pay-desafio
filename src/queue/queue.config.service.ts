@@ -1,14 +1,13 @@
-import { BullRootModuleOptions, SharedBullConfigurationFactory } from "@nestjs/bull";
+import { BullRootModuleOptions, SharedBullConfigurationFactory, } from "@nestjs/bullmq";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class BullConfigService implements SharedBullConfigurationFactory {
     constructor(private readonly configService: ConfigService) { }
-
     createSharedConfiguration(): Promise<BullRootModuleOptions> | BullRootModuleOptions {
         return {
-            redis: {
+            connection: {
                 host: this.configService.get('REDIS_HOST'),
                 port: this.configService.get('REDIS_PORT'),
             },
@@ -21,7 +20,7 @@ export class BullConfigService implements SharedBullConfigurationFactory {
                 removeOnComplete: true,
                 removeOnFail: false,
             },
-            prefix: 'pic-pay',
+            prefix: 'pic-pay'
         }
     }
 }

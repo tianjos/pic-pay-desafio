@@ -1,19 +1,23 @@
 import { HttpModule } from '@nestjs/axios';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
-import { AccountsService } from 'src/account/services/accounts.service';
-import { UsersService } from 'src/users/user.service';
+import { UsersModule } from 'src/users/users.module';
 import { PaymentsController } from './controllers/payments.controller';
+import { AuthorizerService } from './services/authorizer.service';
+import { NotificationsService } from './services/notifications.service';
 import { PaymentsService } from './services/payments.service';
 
 @Module({
   controllers: [PaymentsController],
-  providers: [PaymentsService],
+  providers: [
+    PaymentsService,
+    AuthorizerService,
+    NotificationsService,
+  ],
   imports: [
-    UsersService,
-    AccountsService,
     HttpModule.register({ validateStatus: null }),
-    BullModule.registerQueue({ name: 'notification' })
+    BullModule.registerQueue({ name: 'notification' }),
+    UsersModule
   ]
 })
 export class PaymentsModule { }

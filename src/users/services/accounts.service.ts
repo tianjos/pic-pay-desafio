@@ -1,25 +1,25 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { MakeTransferDto } from "../dtos/make-transfer.dto";
+import { MakeTransferDto } from "../../payments/dtos/make-transfer.dto";
+import { AccountType } from "../enums/account-type.enum";
 import { Account } from "../repositories/account.entity";
 
 @Injectable()
 export class AccountsService {
     constructor(
-        @InjectRepository(Account)
-        private readonly accountsRepository: Repository<Account>
+        @InjectRepository(Account) private readonly accountsRepository: Repository<Account>
     ) { }
 
     private checkBalance(account: Account, value: number) {
         if (account.balance - value < 0) {
-            throw new Error('insufficient balance')
+            throw new BadRequestException('insufficient balance')
         }
     }
 
     private checkAccountType(account: Account) {
-        if (account.type === 'shopkeeper') {
-            throw new Error('invalid operation')
+        if (account.type === AccountType.Shopkeeper) {
+            throw new BadRequestException('invalid operation')
         }
     }
 

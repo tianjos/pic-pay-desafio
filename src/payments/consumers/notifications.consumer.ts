@@ -12,6 +12,7 @@ export class NotificationsConsumer extends WorkerHost {
     }
 
     async process(job: Job<CreatePaymentDto>, token?: string): Promise<any> {
+        console.log('job', job.data)
         await this.notificationsService.notifyPayment()
     }
 

@@ -1,4 +1,4 @@
-import { Account } from "../repositories/account.entity"
+import { Account } from "../../users/repositories/account.entity"
 
 export class MakeTransferDto {
     payer: Account
