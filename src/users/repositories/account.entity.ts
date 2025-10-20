@@ -1,4 +1,4 @@
-import { Timestamp } from "src/common/repositories/timestamp.entity";
+import { Timestamp } from "src/common/repositories/timestamp";
 import { User } from "src/users/repositories/user.entity";
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AccountType } from "../enums/account-type.enum";
