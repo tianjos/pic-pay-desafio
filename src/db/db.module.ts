@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { join } from "node:path";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 @Module({
     imports: [TypeOrmModule.forRootAsync({
@@ -11,9 +13,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
             password: configService.get<string>('DB_PASSWORD'),
             port: Number(configService.get<number>('DB_PORT')),
             database: configService.get<string>('DB_NAME'),
-            entities: [__dirname + '/entities/**'],
-            migrations: [__dirname + '/migrations/*.ts'],
-            synchronize: false,
+            entities: [join(__dirname, '..', '**', '*.entity.{ts,js}')],
+            migrations: [__dirname + '/migrations/*.{ts,js}'],
+            namingStrategy: new SnakeNamingStrategy()
         }),
         inject: [ConfigService]
     })]
