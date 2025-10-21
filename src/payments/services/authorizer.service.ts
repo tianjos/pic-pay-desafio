@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { ForbiddenException, Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { AxiosError } from 'axios';
-import { catchError, firstValueFrom, retry } from 'rxjs';
+import { catchError, firstValueFrom, retry, tap } from 'rxjs';
 
 @Injectable()
 export class AuthorizerService {
@@ -14,6 +14,7 @@ export class AuthorizerService {
             .get('https://util.devi.tools/api/v2/authorize')
             .pipe(
                 retry(5),
+                tap(() => this.logger.log('checking authorization')),
                 catchError((error: AxiosError) => {
                     this.logger.error(error.response?.data);
 

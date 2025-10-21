@@ -11,7 +11,7 @@ import { AuthorizerService } from './authorizer.service';
 export class PaymentsService {
     constructor(
         @InjectQueue('notification')
-        private readonly paymentsQueue: Queue,
+        private readonly notificationQueue: Queue,
         private readonly authorizerService: AuthorizerService,
         private readonly usersService: UsersService,
         private readonly accountsService: AccountsService,
@@ -29,6 +29,6 @@ export class PaymentsService {
             payer?.account!, payee?.account!, dto.value)
         )
 
-        await this.paymentsQueue.add('payment', dto)
+        await this.notificationQueue.add('payment', dto)
     }
 }

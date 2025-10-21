@@ -15,7 +15,9 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
             database: configService.get<string>('DB_NAME'),
             entities: [join(__dirname, '..', '**', '*.entity.{ts,js}')],
             migrations: [__dirname + '/migrations/*.{ts,js}'],
-            namingStrategy: new SnakeNamingStrategy()
+            namingStrategy: new SnakeNamingStrategy(),
+            // logging: true,
+            // logger: 'formatted-console'
         }),
         inject: [ConfigService]
     })]

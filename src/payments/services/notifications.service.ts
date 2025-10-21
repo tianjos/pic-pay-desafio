@@ -1,7 +1,7 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable, Logger, ServiceUnavailableException } from "@nestjs/common";
 import { AxiosError } from "axios";
-import { catchError, firstValueFrom, retry } from "rxjs";
+import { catchError, firstValueFrom, retry, tap } from "rxjs";
 
 @Injectable()
 export class NotificationsService {
@@ -14,6 +14,7 @@ export class NotificationsService {
             .post('https://util.devi.tools/api/v1/notify')
             .pipe(
                 retry(5),
+                tap(() => this.logger.log('notifying transfer')),
                 catchError((error: AxiosError) => {
                     this.logger.error(error.response?.data);
 
@@ -25,6 +26,8 @@ export class NotificationsService {
         if (response.status !== 204) {
             throw new ServiceUnavailableException('try again later')
         }
+
+        this.logger.log('notification sended successfully')
     }
 
 }

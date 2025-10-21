@@ -1,18 +1,21 @@
 import { Processor, WorkerHost } from "@nestjs/bullmq";
-import { Injectable } from "@nestjs/common";
+import { Logger } from "@nestjs/common";
 import { Job } from "bullmq";
 import { CreatePaymentDto } from "src/payments/dtos/create-payment.dto";
 import { NotificationsService } from "../services/notifications.service";
 
 @Processor('notification')
-@Injectable()
+// @Injectable()
 export class NotificationsConsumer extends WorkerHost {
+    private readonly logger = new Logger(NotificationsService.name)
+
     constructor(private readonly notificationsService: NotificationsService) {
         super()
     }
 
     async process(job: Job<CreatePaymentDto>, token?: string): Promise<any> {
-        console.log('job', job.data)
+        this.logger.log('processing job')
+
         await this.notificationsService.notifyPayment()
     }
 

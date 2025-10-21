@@ -11,4 +11,7 @@ export class IdempotencyKey extends Timestamp {
 
     @Column({ type: 'jsonb', nullable: true })
     response: any
+
+    @Column({ nullable: true })
+    expiresAt: Date
 }

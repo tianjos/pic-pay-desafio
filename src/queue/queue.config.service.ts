@@ -20,7 +20,7 @@ export class BullConfigService implements SharedBullConfigurationFactory {
                 removeOnComplete: true,
                 removeOnFail: false,
             },
-            prefix: 'pic-pay'
+            prefix: 'pic-pay',
         }
     }
 }
